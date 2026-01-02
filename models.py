@@ -2,6 +2,7 @@
 
 import re
 from sqlite3 import Connection
+from database import get_connection,close_connection
 
 
 # TODO: Define the raw SQL strings for:

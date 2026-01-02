@@ -6,3 +6,4 @@ def test_notes_placeholder():
     """Placeholder until notes logic exists."""
     pytest.skip("Wait for notes exercise.")
 
+
