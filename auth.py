@@ -10,13 +10,6 @@ from datetime import datetime, timezone , timedelta
 
 
 
-# TODO: Sessions store server-side session IDs and reference `users.id`.
-# TODO: Implement bcrypt-based `hash_password`/`verify_password` helpers.
-# TODO: Add `create_session(user_id: int) -> str` that inserts into `sessions`.
-# TODO: Add `get_session(session_id: str)` to read session metadata from the DB.
-# TODO: Add `delete_session(session_id: str)` for logout and cleanup.
-
-
 def hash_password(plain: str) -> str:
     """Return a bcrypt hash for the clear-text password."""
     hashed = bcrypt.hashpw(plain.encode("utf-8"), bcrypt.gensalt())
@@ -46,14 +39,9 @@ def create_session(user_id: int, db_path: str) -> str:
     close_connection(conn)
 
     return session_id
+  
 
     
-
-
-
-
-    
-
 
 
 def get_session(session_id: str, db_path: str):
