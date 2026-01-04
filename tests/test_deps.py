@@ -59,3 +59,4 @@ def test_invalid_session_returns_401(monkeypatch, temp_db, client):
     response = client.get("/protected")
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
+
