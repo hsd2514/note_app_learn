@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS sessions(id TEXT PRIMARY KEY, user_id INTEGER REFEREN
 
 #  - notes(id INTEGER PRIMARY KEY, user_id INTEGER REFERENCES users(id), content TEXT, created_at TEXT)
 create_notes_table = """
-CREATE TABLE IF NOT EXISTS notes(id TEXT PRIMARY KEY, user_id INTEGER REFERENCES users(id), expires_at TEXT)
+CREATE TABLE IF NOT EXISTS notes(id INTEGER PRIMARY KEY, user_id INTEGER REFERENCES users(id), content TEXT, created_at TEXT)
 """
 
 def init_schema(conn: Connection) -> None:
