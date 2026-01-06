@@ -17,3 +17,4 @@ def test_database_connection_lifecycle(tmp_path):
     with pytest.raises(sqlite3.ProgrammingError):
         conn.execute("SELECT 1")
 
+

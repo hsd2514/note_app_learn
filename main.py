@@ -68,6 +68,9 @@ def login(payload: dict):
             raise HTTPException(status_code=401, detail="Invalid credentials")
         session_id = auth.create_session(user_row["id"], DB_PATH)
         conn.commit()
+        # TODO: wrap this in sqlite3.OperationalError handling and return 503 when the auth DB is offline.
+    except sqlite3.OperationalError:
+        raise HTTPException(status_code=503, detail="Authentication backend unavailable")
     finally:
         close_connection(conn)
 
@@ -78,7 +81,11 @@ def login(payload: dict):
 #  - POST /notes: protected by deps.get_current_user, call notes.create_note, return 201.
 @app.post("/notes")
 def create_note(payload: dict, user=Depends(deps.get_current_user)):
-    notes.create_note(user["user_id"], payload["content"], DB_PATH)
+    # TODO: catch sqlite3.OperationalError around the notes insert and return 503 with a friendly detail message.
+    try:
+        notes.create_note(user["user_id"], payload["content"], DB_PATH)
+    except sqlite3.OperationalError:
+        raise HTTPException(status_code=503, detail="Note storage unavailable")
     return Response(status_code=201)
 #  - GET /notes: protected by deps.get_current_user, call notes.list_notes, return the list.
 @app.get("/notes")

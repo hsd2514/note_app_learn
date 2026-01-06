@@ -4,6 +4,7 @@ from time import timezone
 from fastapi import Depends, FastAPI, HTTPException, Request, status
 from datetime import datetime,timedelta,timezone
 import auth
+import sqlite3
 
 
 DB_PATH = "notes.db"
@@ -23,8 +24,11 @@ def get_current_user(request: Request) -> dict:
             detail="Not authenticated",
         )
 
-    # 2. Fetch session from DB
-    session = auth.get_session(session_id, DB_PATH)
+
+    try:
+        session = auth.get_session(session_id, DB_PATH)
+    except sqlite3.OperationalError:
+        raise HTTPException(status_code=503, detail="Authentication backend unavailable")
     if not session:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
